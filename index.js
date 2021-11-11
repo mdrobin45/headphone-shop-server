@@ -22,6 +22,7 @@ async function insertData()
         const dbName = client.db('HeadPhoneStore');
         const headPhoneCollection = dbName.collection('headphones');
         const usersCollection = dbName.collection('userInfo');
+        const orderCollection = dbName.collection('orders');
 
         // Get on root
         app.get('/', async (req, res) =>
@@ -72,6 +73,13 @@ async function insertData()
             const result = await usersCollection.insertOne(newUser);
             res.send(result);
         });
+
+        // Post api for order
+        app.post('/orders',async(req,res)=>{
+            const order= req.body;
+            const result = await orderCollection.insertOne(order);
+            res.send(result)
+        })
 
         // App listening
         app.listen(port, async (req, res) =>
