@@ -21,6 +21,7 @@ async function insertData()
         console.log('database connected');
         const dbName = client.db('HeadPhoneStore');
         const headPhoneCollection = dbName.collection('headphones');
+        const usersCollection = dbName.collection('userInfo');
 
         // Get on root
         app.get('/', async (req, res) =>
@@ -42,6 +43,33 @@ async function insertData()
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await headPhoneCollection.findOne(query);
+            res.send(result);
+        });
+
+
+        // Get usersInfo
+        app.get('/users', async (req, res) =>
+        {
+            const cursor = usersCollection.find({});
+            const result = await cursor.toArray();
+            res.send(result);
+        });
+
+
+        // Get single UserInfo
+        app.get('/users/:email', async (req, res) =>
+        {
+            const email = req.params.email;
+            const query = { email: (email) };
+            const result = await usersCollection.findOne(query);
+            res.send(result);
+        });
+
+        // Post api for user info
+        app.post('/users', async (req, res) =>
+        {
+            const newUser = req.body;
+            const result = await usersCollection.insertOne(newUser);
             res.send(result);
         });
 
