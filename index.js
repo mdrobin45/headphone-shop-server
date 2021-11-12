@@ -106,6 +106,13 @@ async function insertData()
             res.send(makeArray);
         });
 
+
+        // App listening
+        app.listen(port, async (req, res) =>
+        {
+            console.log('Server running on port: ', port);
+        });
+
         // Delete api
         app.delete('/orders/:id', async (req, res) =>
         {
@@ -115,11 +122,20 @@ async function insertData()
             res.send(result);
         });
 
-        // App listening
-        app.listen(port, async (req, res) =>
+        // Update product status
+        app.put('/orders/:id', async (req, res) =>
         {
-            console.log('Server running on port: ', port);
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const newStatus = {
+                $set: {
+                    status: 'Approved'
+                }
+            };
+            const result = orderCollection.updateOne(query, newStatus);
+            res.send(result);
         });
+
     } finally {
 
     }
