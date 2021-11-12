@@ -24,6 +24,26 @@ async function insertData()
         const usersCollection = dbName.collection('userInfo');
         const orderCollection = dbName.collection('orders');
 
+
+        // Post api for user info
+        app.post('/users', async (req, res) =>
+        {
+            const newUser = req.body;
+            const result = await usersCollection.insertOne(newUser);
+            res.send(result);
+        });
+
+        // Post api for order
+        app.post('/orders', async (req, res) =>
+        {
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
+            res.send(result);
+        });
+
+
+
+
         // Get on root
         app.get('/', async (req, res) =>
         {
@@ -66,20 +86,34 @@ async function insertData()
             res.send(result);
         });
 
-        // Post api for user info
-        app.post('/users', async (req, res) =>
+
+        // Get api for all orders
+        app.get('/orders', async (req, res) =>
         {
-            const newUser = req.body;
-            const result = await usersCollection.insertOne(newUser);
+            const cursor = orderCollection.find({});
+            const result = await cursor.toArray();
             res.send(result);
         });
 
-        // Post api for order
-        app.post('/orders',async(req,res)=>{
-            const order= req.body;
-            const result = await orderCollection.insertOne(order);
-            res.send(result)
-        })
+
+        // Get api for orders by user
+        app.get('/orders/:email', async (req, res) =>
+        {
+            const email = req.params.email;
+            const query = { email: (email) };
+            const result = orderCollection.find(query);
+            const makeArray = await result.toArray();
+            res.send(makeArray);
+        });
+
+        // Delete api
+        app.delete('/orders/:id', async (req, res) =>
+        {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await orderCollection.deleteOne(query);
+            res.send(result);
+        });
 
         // App listening
         app.listen(port, async (req, res) =>
