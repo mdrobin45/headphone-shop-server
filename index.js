@@ -34,6 +34,14 @@ async function insertData()
             res.send(result);
         });
 
+        // Post api for headphone
+        app.post('/shop', async (req, res) =>
+        {
+            const newProduct = req.body;
+            const result = await headPhoneCollection.insertOne(newProduct);
+            res.send(result);
+        });
+
 
         // Post api for review
         app.post('/reviews', async (req, res) =>
