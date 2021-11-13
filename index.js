@@ -41,6 +41,7 @@ async function insertData()
             const newReview = req.body;
             const result = await reviewCollection.insertOne(newReview);
             res.send(result);
+            console.log(result);
         });
 
 
@@ -136,6 +137,15 @@ async function insertData()
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await orderCollection.deleteOne(query);
+            res.send(result);
+        });
+
+        // Delete Product
+        app.delete('/shop/:id', async (req, res) =>
+        {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await headPhoneCollection.deleteOne(query);
             res.send(result);
         });
 
