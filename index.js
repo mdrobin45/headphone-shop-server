@@ -23,6 +23,7 @@ async function insertData()
         const headPhoneCollection = dbName.collection('headphones');
         const usersCollection = dbName.collection('userInfo');
         const orderCollection = dbName.collection('orders');
+        const reviewCollection = dbName.collection('reviews');
 
 
         // Post api for user info
@@ -32,6 +33,16 @@ async function insertData()
             const result = await usersCollection.insertOne(newUser);
             res.send(result);
         });
+
+
+        // Post api for review
+        app.post('/reviews', async (req, res) =>
+        {
+            const newReview = req.body;
+            const result = await reviewCollection.insertOne(newReview);
+            res.send(result);
+        });
+
 
         // Post api for order
         app.post('/orders', async (req, res) =>
@@ -43,7 +54,13 @@ async function insertData()
 
 
 
-
+        // Get api for review
+        app.get('/reviews', async (req, res) =>
+        {
+            const cursor = reviewCollection.find({});
+            const result = await cursor.toArray();
+            res.send(result);
+        });
         // Get on root
         app.get('/', async (req, res) =>
         {
