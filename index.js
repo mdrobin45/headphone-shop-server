@@ -104,6 +104,20 @@ async function insertData()
             res.send(result);
         });
 
+        // Make admin
+        app.put('/users/:email', async (req, res) =>
+        {
+            const email = req.params.email;
+            const query = { email: (email) };
+            const updateRole = {
+                $set: {
+                    role: 'admin'
+                }
+            };
+            const result = usersCollection.updateOne(query, updateRole);
+            res.send(result);
+        });
+
 
         // Get api for all orders
         app.get('/orders', async (req, res) =>
