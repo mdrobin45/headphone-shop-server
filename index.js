@@ -126,7 +126,6 @@ async function insertData()
             res.send(result);
         });
 
-
         // Get api for all orders
         app.get('/orders', async (req, res) =>
         {
