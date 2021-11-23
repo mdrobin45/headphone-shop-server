@@ -24,7 +24,20 @@ async function insertData()
         const usersCollection = dbName.collection('userInfo');
         const orderCollection = dbName.collection('orders');
         const reviewCollection = dbName.collection('reviews');
+        const cartCollection = dbName.collection('cart');
 
+
+        // Post api for cart collection
+        app.post('/cart', async (req, res) =>
+        {
+            const product = req.body;
+            const find = await cartCollection.findOne({ _id: (product._id) });
+            if (!find) {
+                const result = await cartCollection.insertOne(product);
+                res.send(result);
+            }
+            res.send({ duplicate: true });
+        });
 
         // Post api for user info
         app.post('/users', async (req, res) =>
