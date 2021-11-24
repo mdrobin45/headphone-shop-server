@@ -75,7 +75,15 @@ async function insertData()
         });
 
 
-
+        // Get api for cart by user
+        app.get('/cart/:email', async (req, res) =>
+        {
+            const email = req.params.email;
+            const query = { email: email };
+            const cursor = cartCollection.find(query);
+            const result = await cursor.toArray();
+            res.send(result);
+        });
         // Get api for review
         app.get('/reviews', async (req, res) =>
         {
